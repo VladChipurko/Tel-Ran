@@ -1,5 +1,7 @@
 package telran.java2022.account.service;
 
+import java.time.LocalDate;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -82,6 +84,7 @@ public class UserServiceImpl implements UserService{
 				.orElseThrow(() -> new UserNotFoundException(login));
 		String password = passwordEncoder.encode(newPassword);
 		user.setPassword(password);
+		user.setPasswordExpiration(LocalDate.now().plusDays(60));
 		userRepository.save(user);
 		
 	}

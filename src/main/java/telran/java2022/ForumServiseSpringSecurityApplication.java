@@ -1,5 +1,7 @@
 package telran.java2022;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -27,6 +29,7 @@ public class ForumServiseSpringSecurityApplication implements CommandLineRunner{
 			User user = new User("admin", password, "", "");
 			user.addRole("ADMIN");
 			user.addRole("MODERATOR");
+			user.setPasswordExpiration(LocalDate.now().plusYears(100));
 			repository.save(user);
 		}
 		

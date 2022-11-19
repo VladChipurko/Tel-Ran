@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import telran.java2022.forum.dao.ForumRepository;
 import telran.java2022.forum.dto.CommentDto;
 import telran.java2022.forum.dto.PeriodDto;
@@ -19,6 +20,7 @@ import telran.java2022.forum.model.Post;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ForumServiceImpl implements ForumService {
 	
 	final ForumRepository forumRepository;
@@ -34,12 +36,14 @@ public class ForumServiceImpl implements ForumService {
 
 	@Override
 	public PostDto findPostById(String id) {
+		log.info("post with id {} handled", id);
 		Post post = forumRepository.findById(id).orElseThrow(()->new PostNotFoundException(id));
 		return modelMapper.map(post, PostDto.class);
 	}
 
 	@Override
 	public void addLike(String id) {
+		log.info("post with id {} handled", id);
 		Post post = forumRepository.findById(id).orElseThrow(() -> new PostNotFoundException(id));
 		post.addLike();
 		forumRepository.save(post);
@@ -48,6 +52,7 @@ public class ForumServiceImpl implements ForumService {
 
 	@Override
 	public PostDto addComment(String id, String user, CommentDto commentDto) {
+		log.info("post with id {} handled", id);
 		Post post = forumRepository.findById(id).orElseThrow(() -> new PostNotFoundException(id));
 		Comment comment = new Comment(user, commentDto.getMessage());
 		post.addComment(comment);
@@ -57,6 +62,7 @@ public class ForumServiceImpl implements ForumService {
 
 	@Override
 	public PostDto deletePost(String id) {
+		log.info("post with id {} handled", id);
 		Post post = forumRepository.findById(id).orElseThrow(() -> new PostNotFoundException(id));
 		forumRepository.deleteById(id);
 		return modelMapper.map(post, PostDto.class);
